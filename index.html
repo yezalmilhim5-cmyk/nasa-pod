@@ -2,68 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NASA Picture of the Day</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA Astronomy Picture of the Day</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
+      padding: 20px;
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
-      height: 100vh;
-      background: #000;
+      align-items: center;
       font-family: Arial, sans-serif;
+      background-color: #000;
       color: #fff;
       text-align: center;
     }
-    a, img, iframe, video {
+    h1 {
+      margin-bottom: 20px;
+    }
+    #apod-container img {
       max-width: 90vw;
-      max-height: 70vh;
+      height: auto;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-      margin-bottom: 15px;
-    }
-    img {
-      width: 100%;
-      height: auto;
       cursor: pointer;
       transition: transform 0.2s ease;
     }
-    img:hover {
+    #apod-container img:hover {
       transform: scale(1.02);
     }
-    iframe, video {
-      width: 100%;
-      aspect-ratio: 16/9;
-    }
-    #error {
-      color: #ff6666;
+    #apod-container p {
       font-size: 1.1em;
-      margin-top: 10px;
+      line-height: 1.5em;
     }
-    #title {
-      font-size: 1.4em;
-      margin: 10px 0;
+    a {
+      color: #4da6ff;
+      text-decoration: none;
     }
-    #explanation {
-      font-size: 1em;
-      max-width: 80%;
-      margin: auto;
-      line-height: 1.4em;
-      color: #ccc;
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div id="title"></div>
-  <a id="apod-link" target="_blank" style="display:none;">
-    <img id="apod" alt="NASA Astronomy Picture of the Day">
-  </a>
-  <iframe id="apod-iframe" frameborder="0" allowfullscreen style="display:none;"></iframe>
-  <video id="apod-video" controls style="display:none;"></video>
-  <div id="error" style="display:none;"></div>
-  <div id="explanation"></div>
-  <script src="script.js"></script>
+  <h1>NASA Astronomy Picture of the Day</h1>
+  <div id="apod-container"></div>
+
+  <script>
+    const apiKey = "hoqJzUfK9U1IlVQPR6OEnYxM4fejdWOqcf1Drnlb";
+    const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+
+    async function fetchAPOD() {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        const container = document.getElementById("apod-container");
+        container.innerHTML = ""; // Clear previous content
+
+        if (data.media_type === "image") {
+          const img = document.createElement("img");
+          img.src = data.url;
+          img.alt = data.title || "NASA Astronomy Picture of the Day";
+          container.appendChild(img);
+        } else {
+          // Fallback for video/unsupported types
+          const message = document.createElement("p");
+          message.innerHTML = `Unable to load today's media. 
+            <a href="https://apod.nasa.gov/apod/astropix.html" target="_blank" rel="noopener noreferrer">
+              View it on APOD
+            </a>`;
+          container.appendChild(message);
+        }
+
+      } catch (error) {
+        console.error("Error fetching APOD:", error);
+        const container = document.getElementById("apod-container");
+        container.innerHTML = `<p>Unable to load today's media. 
+          <a href="https://apod.nasa.gov/apod/astropix.html" target="_blank" rel="noopener noreferrer">
+            View it on APOD
+          </a></p>`;
+      }
+    }
+
+    fetchAPOD();
+  </script>
 </body>
 </html>
