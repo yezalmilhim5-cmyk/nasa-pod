@@ -10,15 +10,19 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
       background: #000;
       font-family: Arial, sans-serif;
+      color: #fff;
+      text-align: center;
     }
     a, img, iframe, video {
       max-width: 90vw;
-      max-height: 90vh;
+      max-height: 70vh;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      margin-bottom: 15px;
     }
     img {
       width: 100%;
@@ -34,20 +38,32 @@
       aspect-ratio: 16/9;
     }
     #error {
-      color: #fff;
-      font-size: 1.2em;
-      text-align: center;
+      color: #ff6666;
+      font-size: 1.1em;
+      margin-top: 10px;
+    }
+    #title {
+      font-size: 1.4em;
+      margin: 10px 0;
+    }
+    #explanation {
+      font-size: 1em;
       max-width: 80%;
+      margin: auto;
+      line-height: 1.4em;
+      color: #ccc;
     }
   </style>
 </head>
 <body>
+  <div id="title"></div>
   <a id="apod-link" target="_blank" style="display:none;">
     <img id="apod" alt="NASA Astronomy Picture of the Day">
   </a>
   <iframe id="apod-iframe" frameborder="0" allowfullscreen style="display:none;"></iframe>
   <video id="apod-video" controls style="display:none;"></video>
   <div id="error" style="display:none;"></div>
+  <div id="explanation"></div>
   <script src="script.js"></script>
 </body>
 </html>
