@@ -14,21 +14,24 @@
       background: #000;
       font-family: Arial, sans-serif;
     }
-    a {
-      display: block;
-      max-width: 90%;
-      max-height: 90%;
+    a, img, iframe, video {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
     }
     img {
       width: 100%;
       height: auto;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
       cursor: pointer;
       transition: transform 0.2s ease;
     }
     img:hover {
       transform: scale(1.02);
+    }
+    iframe, video {
+      width: 100%;
+      aspect-ratio: 16/9;
     }
     #error {
       color: #fff;
@@ -39,9 +42,11 @@
   </style>
 </head>
 <body>
-  <a id="apod-link" target="_blank">
+  <a id="apod-link" target="_blank" style="display:none;">
     <img id="apod" alt="NASA Astronomy Picture of the Day">
   </a>
+  <iframe id="apod-iframe" frameborder="0" allowfullscreen style="display:none;"></iframe>
+  <video id="apod-video" controls style="display:none;"></video>
   <div id="error" style="display:none;"></div>
   <script src="script.js"></script>
 </body>
