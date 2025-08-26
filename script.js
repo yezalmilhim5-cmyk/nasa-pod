@@ -6,19 +6,26 @@ fetch(url)
   .then(data => {
     const img = document.getElementById("apod");
     const link = document.getElementById("apod-link");
+    const iframe = document.getElementById("apod-iframe");
+    const video = document.getElementById("apod-video");
     const error = document.getElementById("error");
 
     if (data.media_type === "image") {
+      // Show image
+      link.style.display = "block";
       img.src = data.url;
-      link.href = data.hdurl || data.url; // click opens HD image in new tab
+      link.href = data.hdurl || data.url;
     } else if (data.media_type === "video") {
-      // Show a message and link to video
-      img.style.display = "none";
-      error.style.display = "block";
-      error.innerHTML = `Today's APOD is a video.<br>
-                         <a href="${data.url}" target="_blank" style="color: #4da6ff;">Click here to watch it</a>`;
+      // Check if it’s YouTube/Vimeo
+      if (data.url.includes("youtube.com") || data.url.includes("vimeo.com")) {
+        iframe.style.display = "block";
+        iframe.src = data.url;
+      } else {
+        // Assume direct video file (e.g., MP4)
+        video.style.display = "block";
+        video.src = data.url;
+      }
     } else {
-      img.style.display = "none";
       error.style.display = "block";
       error.textContent = "Unable to load today's NASA Picture of the Day.";
     }
