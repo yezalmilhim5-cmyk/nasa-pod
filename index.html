@@ -5,46 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NASA Astronomy Picture of the Day</title>
   <style>
+    /* Make background transparent */
     body {
       margin: 0;
-      padding: 20px;
+      padding: 0;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      min-height: 100vh;
       font-family: Arial, sans-serif;
-      background-color: #000;
+      background: transparent;
       color: #fff;
+    }
+
+    #apod-container {
       text-align: center;
     }
-    h1 {
-      margin-bottom: 20px;
-    }
+
     #apod-container img {
-      max-width: 90vw;
+      max-width: 100%;
       height: auto;
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
       cursor: pointer;
       transition: transform 0.2s ease;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
     }
+
     #apod-container img:hover {
       transform: scale(1.02);
     }
+
     #apod-container p {
-      font-size: 1.1em;
-      line-height: 1.5em;
+      font-size: 1em;
+      line-height: 1.4em;
     }
-    a {
+
+    #apod-container a {
       color: #4da6ff;
       text-decoration: none;
     }
-    a:hover {
+
+    #apod-container a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <h1>NASA Astronomy Picture of the Day</h1>
   <div id="apod-container"></div>
 
   <script>
@@ -60,12 +66,21 @@
         container.innerHTML = ""; // Clear previous content
 
         if (data.media_type === "image") {
+          // Make the image clickable to HD
+          const link = document.createElement("a");
+          link.href = data.hdurl || data.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+
           const img = document.createElement("img");
           img.src = data.url;
-          img.alt = data.title || "NASA Astronomy Picture of the Day";
-          container.appendChild(img);
+          img.alt = data.title || "NASA APOD";
+
+          link.appendChild(img);
+          container.appendChild(link);
+
         } else {
-          // Fallback for video/unsupported types
+          // Fallback message with clickable link
           const message = document.createElement("p");
           message.innerHTML = `Unable to load today's media. 
             <a href="https://apod.nasa.gov/apod/astropix.html" target="_blank" rel="noopener noreferrer">
